@@ -10,7 +10,32 @@ interface DPEStatsProps {
 
 export function DPEStats({ dpes, onToggle, isVisible }: DPEStatsProps) {
     if (dpes.length === 0) {
-        return null;
+        return (
+            <Box
+                bg="white"
+                px={3}
+                py={4}
+                borderRadius="md"
+                boxShadow="md"
+                zIndex={1000}
+                maxW="400px"
+                textAlign="center"
+            >
+                <Text fontWeight="bold" mb={3}>Aucun DPE trouvé</Text>
+                <Button
+                    as="a"
+                    href="https://www.ithaque-renovation.fr/simulateur-dpe"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    colorScheme="green"
+                    variant="solid"
+                    size="sm"
+                    leftIcon={<span>⚡</span>}
+                >
+                    Je simule mon DPE
+                </Button>
+            </Box>
+        );
     }
 
     if (!isVisible) {

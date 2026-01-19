@@ -15,13 +15,13 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
 
-  const handleSearch = useCallback(async (address: string) => {
+  const handleSearch = useCallback(async (address: string, radius: number) => {
     setIsLoading(true);
     setError(null);
     setHasSearched(true);
 
     try {
-      const response = await searchDPE(address, 500);
+      const response = await searchDPE(address, radius);
       setDpes(response.results);
       setCenter(response.center);
     } catch (err) {

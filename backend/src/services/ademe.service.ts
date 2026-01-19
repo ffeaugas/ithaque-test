@@ -63,8 +63,20 @@ export async function searchDPEByLocation(
   lon: number,
   lat: number,
   radius: number = 500,
-  limit: number = 100
+  limit: number = 1000
 ): Promise<DPE[]> {
+  // Validation des paramètres
+  if (radius < 100 || radius > 1000) {
+    throw new Error(
+      `Le rayon doit être compris entre 100 et 1000 mètres. Valeur reçue: ${radius}`
+    );
+  }
+  if (limit > 5000) {
+    throw new Error(
+      `La limite ne doit pas dépasser 5000. Valeur reçue: ${limit}`
+    );
+  }
+
   try {
     // L'API ADEME utilise le format geo_distance=lon:lat:distance
     const params = new URLSearchParams({
