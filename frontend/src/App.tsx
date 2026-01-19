@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
-import { Box, Flex, Heading, Text, Alert } from "@chakra-ui/react";
+import { Box, Flex, Text, Alert } from "@chakra-ui/react";
+import { Header } from "./components/Header";
 import { AddressSearch } from "./components/AddressSearch";
 import { DPEMap } from "./components/DPEMap";
 import { searchDPE } from "./services/api";
@@ -14,13 +15,13 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
 
-  const handleSearch = useCallback(async (address: string) => {
+  const handleSearch = useCallback(async (address: string, radius: number) => {
     setIsLoading(true);
     setError(null);
     setHasSearched(true);
 
     try {
-      const response = await searchDPE(address, 500);
+      const response = await searchDPE(address, radius);
       setDpes(response.results);
       setCenter(response.center);
     } catch (err) {
@@ -33,16 +34,7 @@ function App() {
 
   return (
     <Box minH="100vh" bg="gray.50">
-      {/* Header */}
-      <Box bg="blue.600" color="white" py={4} px={6} boxShadow="md">
-        <Heading size="lg" fontWeight="bold">
-          🏠 Visualisation des DPE
-        </Heading>
-        <Text fontSize="sm" mt={1} opacity={0.9}>
-          Recherchez une adresse pour afficher les Diagnostics de Performance
-          Énergétique
-        </Text>
-      </Box>
+      <Header />
 
       {/* Barre de recherche */}
       <Flex

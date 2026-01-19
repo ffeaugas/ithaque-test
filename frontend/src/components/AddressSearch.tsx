@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
-import { Box, Input, VStack, Button, Text } from "@chakra-ui/react";
+import { Box, Input, Button, VStack, Text } from "@chakra-ui/react";
 import { getAddressSuggestions } from "../services/api";
+import { RadiusSlider } from "./RadiusSlider";
 import type { AddressSuggestion } from "../types/dpe";
 
 interface AddressSearchProps {
-  onSearch: (address: string) => void;
+  onSearch: (address: string, radius: number) => void;
   isLoading: boolean;
 }
 
@@ -12,6 +13,7 @@ export function AddressSearch({ onSearch, isLoading }: AddressSearchProps) {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [radius, setRadius] = useState(500);
 
   // Debounce pour éviter trop d'appels API
   useEffect(() => {
@@ -33,9 +35,9 @@ export function AddressSearch({ onSearch, isLoading }: AddressSearchProps) {
     (suggestion: AddressSuggestion) => {
       setQuery(suggestion.label);
       setShowSuggestions(false);
-      onSearch(suggestion.label);
+      onSearch(suggestion.label, radius);
     },
-    [onSearch]
+    [onSearch, radius]
   );
 
   const handleSubmit = useCallback(
@@ -43,16 +45,16 @@ export function AddressSearch({ onSearch, isLoading }: AddressSearchProps) {
       e.preventDefault();
       if (query.trim()) {
         setShowSuggestions(false);
-        onSearch(query.trim());
+        onSearch(query.trim(), radius);
       }
     },
-    [query, onSearch]
+    [query, onSearch, radius]
   );
 
   return (
-    <Box position="relative" width="100%" maxW="600px">
+    <Box position="relative" width="100%" maxW="900px">
       <form onSubmit={handleSubmit}>
-        <Box display="flex" gap={2}>
+        <Box display="flex" gap={2} alignItems="flex-start">
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -63,7 +65,9 @@ export function AddressSearch({ onSearch, isLoading }: AddressSearchProps) {
             _focus={{ borderColor: "blue.500", boxShadow: "0 0 0 1px #3182ce" }}
             onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
             onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+            flex={1}
           />
+          <RadiusSlider value={radius} onChange={setRadius} />
           <Button
             type="submit"
             colorScheme="blue"
