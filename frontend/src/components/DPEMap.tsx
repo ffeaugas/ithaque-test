@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { Box, Text } from "@chakra-ui/react";
 import { DPEMarker } from "./DPEMarker";
+import { DPEStats } from "./DPEStats";
 import type { DPE } from "../types/dpe";
 import "leaflet/dist/leaflet.css";
 
@@ -35,6 +36,7 @@ export function DPEMap({ dpes, center }: DPEMapProps) {
   const initialCenter: [number, number] = center
     ? [center.lat, center.lon]
     : defaultCenter;
+
 
   return (
     <Box
@@ -76,6 +78,18 @@ export function DPEMap({ dpes, center }: DPEMapProps) {
           <Text fontSize="sm" fontWeight="bold">
             {dpes.length} DPE trouvé{dpes.length > 1 ? "s" : ""}
           </Text>
+        </Box>
+      )}
+
+      {/* Stats dans le coin supérieur droit */}
+      {dpes.length > 0 && (
+        <Box
+          position="absolute"
+          top={4}
+          right={4}
+          zIndex={1000}
+        >
+          <DPEStats dpes={dpes} />
         </Box>
       )}
     </Box>

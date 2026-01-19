@@ -74,7 +74,7 @@ export function DPEMarker({ dpe }: DPEMarkerProps) {
                   backgroundColor: CLASSE_COLORS[dpe.classeEnergetique],
                   color:
                     dpe.classeEnergetique === "C" ||
-                    dpe.classeEnergetique === "D"
+                      dpe.classeEnergetique === "D"
                       ? "#333"
                       : "white",
                   padding: "4px 12px",
